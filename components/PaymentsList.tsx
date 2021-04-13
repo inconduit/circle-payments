@@ -6,7 +6,7 @@ import useInterval from "../hooks/useInterval";
 import PaymentData from "../types/PaymentData";
 import PaymentFilter from "../types/PaymentFilter";
 
-const MAX_PAYMENTS_LIST_LENGTH = 10;
+const MAX_PAYMENTS_LIST_LENGTH = 25;
 
 const PaymentsList = ({ filters = [] }: { filters?: PaymentFilter[] }) => {
   const [tickCount, setTickCount] = useState(0);
@@ -40,13 +40,18 @@ const PaymentsList = ({ filters = [] }: { filters?: PaymentFilter[] }) => {
   if (filteredPayments.length === 0) {
     return <div>No Results</div>;
   }
-  return filteredPayments.map(
-    ({ id, sender, receiver, amount, currency }: PaymentData) => (
-      <div key={id}>
-        sender: {sender.name} receiver: {receiver.name} amount: {amount}{" "}
-        currency: {currency}
-      </div>
-    )
+
+  return (
+    <ul>
+      {filteredPayments.map(
+        ({ id, sender, receiver, amount, currency }: PaymentData) => (
+          <li key={id}>
+            sender: {sender.name} receiver: {receiver.name} amount: {amount}{" "}
+            currency: {currency}
+          </li>
+        )
+      )}
+    </ul>
   );
 };
 
