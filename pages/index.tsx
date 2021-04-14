@@ -14,10 +14,13 @@ const IndexPage = () => {
   const [paymentFilters, setPaymentFilters] = useState<PaymentFilter[]>([]);
   const onChangeFilter = useCallback(
     (key, value) => {
+      const updatedPaymentFilters = paymentFilters.filter(
+        (filter) => filter.key !== key
+      );
       setPaymentFilters(
-        paymentFilters
-          .filter((filter) => filter.key !== key)
-          .concat({ key, value })
+        value
+          ? updatedPaymentFilters.concat({ key, value })
+          : updatedPaymentFilters
       );
     },
     [paymentFilters, setPaymentFilters]
