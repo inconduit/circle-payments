@@ -5,6 +5,11 @@ import get from "lodash/get";
 import useInterval from "../hooks/useInterval";
 import PaymentData from "../types/PaymentData";
 import PaymentFilter from "../types/PaymentFilter";
+import {
+  PaymentCol,
+  PaymentRow,
+  PaymentListContainer,
+} from "./PaymentsList.styled";
 
 const MAX_PAYMENTS_LIST_LENGTH = 25;
 
@@ -38,20 +43,30 @@ const PaymentsList = ({ filters = [] }: { filters?: PaymentFilter[] }) => {
   useInterval(() => setTickCount(tickCount + 1), 1000);
 
   if (filteredPayments.length === 0) {
-    return <div>No Results</div>;
+    return <div style={{ textAlign: "center" }}>No Results</div>;
   }
 
   return (
-    <ul>
-      {filteredPayments.map(
-        ({ id, sender, receiver, amount, currency }: PaymentData) => (
-          <li key={id}>
-            sender: {sender.name} receiver: {receiver.name} amount: {amount}{" "}
-            currency: {currency}
-          </li>
-        )
-      )}
-    </ul>
+    <div>
+      <PaymentRow isHeader>
+        <PaymentCol>Sender Name</PaymentCol>
+        <PaymentCol>Receiver Name</PaymentCol>
+        <PaymentCol flex="0.5">Amount</PaymentCol>
+        <PaymentCol flex="0.5">Currency</PaymentCol>
+      </PaymentRow>
+      <PaymentListContainer>
+        {filteredPayments.map(
+          ({ id, sender, receiver, amount, currency }: PaymentData) => (
+            <PaymentRow key={id}>
+              <PaymentCol>{sender.name}</PaymentCol>
+              <PaymentCol>{receiver.name}</PaymentCol>
+              <PaymentCol flex="0.5">{amount}</PaymentCol>
+              <PaymentCol flex="0.5">{currency}</PaymentCol>
+            </PaymentRow>
+          )
+        )}
+      </PaymentListContainer>
+    </div>
   );
 };
 
