@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 
+import NewPaymentForm from "../components/NewPaymentForm";
 import PaymentsList from "../components/PaymentsList";
 import PaymentFilter from "../types/PaymentFilter";
 import PaymentFilterInput from "../components/PaymentFilterInput";
@@ -28,6 +29,8 @@ const IndexPage = () => {
 
   return (
     <PageLayout>
+      <NewPaymentForm />
+      {/*
       <FiltersContainer>
         <h5>Filters</h5>
         <FiltersRow>
@@ -50,6 +53,7 @@ const IndexPage = () => {
       <PaymentsListContainer>
         <PaymentsList filters={paymentFilters} />
       </PaymentsListContainer>
+      */}
     </PageLayout>
   );
 };
