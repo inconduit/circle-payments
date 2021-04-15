@@ -25,3 +25,5 @@ export default newPaymentsSlice.reducer;
 export const { addPayment } = newPaymentsSlice.actions;
 export const selectNewPayments = (state: { newPayments: NewPaymentsState }) =>
   state.newPayments.value;
+export const selectNewPaymentIds = (state: { newPayments: NewPaymentsState }) =>
+  state.newPayments.value.map(({ id }) => id);

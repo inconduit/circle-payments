@@ -2,12 +2,16 @@ import { useCallback, useState } from "react";
 import Select from "react-select";
 import useFetch from "use-http";
 import { useForm, Controller } from "react-hook-form";
+import { useSelector } from "react-redux";
 
+import { create } from "domain";
 import UserData from "../types/UserData";
 import UserOption from "../types/UserOption";
+import PaymentData from "../types/PaymentData";
 import { currencies } from "../types/Currency";
 import { customSelectStyles } from "./NewPaymentForm.styled";
-import PaymentData from "../types/PaymentData";
+import { selectNewPaymentIds } from "../store/payments/newPaymentsSlice";
+import generateUniqueId from "../utils/generateUniqueId";
 
 const currencyOptions = currencies.map((currency) => ({
   value: currency,
@@ -16,9 +20,6 @@ const currencyOptions = currencies.map((currency) => ({
 
 const POST_RETRY_LIMIT = 10;
 const POST_RETRY_DELAY = 500;
-
-// TODO ensure unique ID against existing payment ids
-const generateUniqueUserId = () => Math.random().toString(36).substr(2, 9);
 
 const NewPaymentForm = ({
   onAddPayment,
@@ -33,6 +34,7 @@ const NewPaymentForm = ({
     formState: { errors },
   } = useForm();
   const [userOptions, setUserOptions] = useState<UserOption[]>([]);
+  const newPaymentIds = useSelector(selectNewPaymentIds);
   const paymentsPost = useFetch("http://localhost:8080/payments", {
     retries: POST_RETRY_LIMIT,
     retryOn: [503],
@@ -55,7 +57,7 @@ const NewPaymentForm = ({
   const onSubmit = useCallback(
     (data) => {
       const postData = {
-        id: generateUniqueUserId(),
+        id: generateUniqueId(newPaymentIds),
         date: new Date().toISOString(),
         sender: { id: data.sender.value, name: data.sender.label },
         receiver: { id: data.receiver.value, name: data.receiver.label },
@@ -73,7 +75,7 @@ const NewPaymentForm = ({
         onAddPayment(postData);
       });
     },
-    [paymentsPost, onAddPayment]
+    [paymentsPost, reset, onAddPayment, newPaymentIds]
   );
 
   return (
