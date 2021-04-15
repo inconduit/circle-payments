@@ -1,16 +1,25 @@
 import { useCallback, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
+import NewPaymentForm from "../components/NewPaymentForm";
 import PaymentsList from "../components/PaymentsList";
 import PaymentFilter from "../types/PaymentFilter";
 import PaymentFilterInput from "../components/PaymentFilterInput";
+import {
+  addPayment,
+  selectNewPayments,
+} from "../store/payments/newPaymentsSlice";
 import {
   PageLayout,
   FiltersContainer,
   FiltersRow,
   PaymentsListContainer,
 } from "../layouts/index.styled";
+import PaymentData from "../types/PaymentData";
 
 const IndexPage = () => {
+  const dispatch = useDispatch();
+  const newPayments = useSelector(selectNewPayments);
   const [paymentFilters, setPaymentFilters] = useState<PaymentFilter[]>([]);
   const onChangeFilter = useCallback(
     (key, value) => {
@@ -25,9 +34,14 @@ const IndexPage = () => {
     },
     [paymentFilters, setPaymentFilters]
   );
+  const dispatchAddPayment = useCallback(
+    (payment: PaymentData) => dispatch(addPayment(payment)),
+    [dispatch]
+  );
 
   return (
     <PageLayout>
+      <NewPaymentForm onAddPayment={dispatchAddPayment} />
       <FiltersContainer>
         <h5>Filters</h5>
         <FiltersRow>
@@ -48,7 +62,7 @@ const IndexPage = () => {
         </FiltersRow>
       </FiltersContainer>
       <PaymentsListContainer>
-        <PaymentsList filters={paymentFilters} />
+        <PaymentsList filters={paymentFilters} newPayments={newPayments} />
       </PaymentsListContainer>
     </PageLayout>
   );
