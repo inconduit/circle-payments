@@ -1,4 +1,4 @@
-export default (existingIds: string[]) => {
+const generateUniqueId = (existingIds: string[]) => {
   const createId = () => Math.random().toString(36).substr(2, 9);
   let id = createId();
 
@@ -7,3 +7,5 @@ export default (existingIds: string[]) => {
   }
   return id;
 };
+
+export default generateUniqueId;
