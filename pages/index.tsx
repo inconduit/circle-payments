@@ -19,7 +19,6 @@ import PaymentData from "../types/PaymentData";
 
 const IndexPage = () => {
   const dispatch = useDispatch();
-  // TODO merge newPayments with existing payments list
   const newPayments = useSelector(selectNewPayments);
   const [paymentFilters, setPaymentFilters] = useState<PaymentFilter[]>([]);
   const onChangeFilter = useCallback(
@@ -42,8 +41,6 @@ const IndexPage = () => {
 
   return (
     <PageLayout>
-      <NewPaymentForm />
-      {/*
       <NewPaymentForm onAddPayment={dispatchAddPayment} />
       <FiltersContainer>
         <h5>Filters</h5>
@@ -65,9 +62,8 @@ const IndexPage = () => {
         </FiltersRow>
       </FiltersContainer>
       <PaymentsListContainer>
-        <PaymentsList filters={paymentFilters} />
+        <PaymentsList filters={paymentFilters} newPayments={newPayments} />
       </PaymentsListContainer>
-      */}
     </PageLayout>
   );
 };

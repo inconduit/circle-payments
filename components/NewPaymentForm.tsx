@@ -29,6 +29,7 @@ const NewPaymentForm = ({
     control,
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
   const [userOptions, setUserOptions] = useState<UserOption[]>([]);
@@ -64,6 +65,11 @@ const NewPaymentForm = ({
       };
 
       paymentsPost.post(postData).then(() => {
+        reset({
+          sender: "",
+          receiver: "",
+          currency: "",
+        });
         onAddPayment(postData);
       });
     },

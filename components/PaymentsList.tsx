@@ -13,7 +13,13 @@ import {
 
 const MAX_PAYMENTS_LIST_LENGTH = 25;
 
-const PaymentsList = ({ filters = [] }: { filters?: PaymentFilter[] }) => {
+const PaymentsList = ({
+  filters = [],
+  newPayments = [],
+}: {
+  filters?: PaymentFilter[];
+  newPayments?: PaymentData[];
+}) => {
   const [tickCount, setTickCount] = useState(0);
   const [payments, setPayments] = useState<PaymentData[]>([]);
   const { error } = useFetch(
@@ -24,8 +30,15 @@ const PaymentsList = ({ filters = [] }: { filters?: PaymentFilter[] }) => {
     },
     [tickCount]
   );
+  const mergedAndSortedPayments = useMemo(
+    () =>
+      payments
+        .concat(newPayments)
+        .sort((paymentA, paymentB) => (paymentA.date < paymentB.date ? 1 : -1)),
+    [payments, newPayments]
+  );
   const filteredPayments = useMemo(() => {
-    const allFilteredPayments = payments.filter((payment) =>
+    const allFilteredPayments = mergedAndSortedPayments.filter((payment) =>
       filters.every(
         (filter) =>
           filter.value === "" ||
@@ -38,7 +51,7 @@ const PaymentsList = ({ filters = [] }: { filters?: PaymentFilter[] }) => {
     return allFilteredPayments.length > MAX_PAYMENTS_LIST_LENGTH
       ? allFilteredPayments.slice(0, MAX_PAYMENTS_LIST_LENGTH)
       : allFilteredPayments;
-  }, [filters, payments]);
+  }, [filters, mergedAndSortedPayments, payments]);
 
   useInterval(() => setTickCount(tickCount + 1), 1000);
 
@@ -72,6 +85,7 @@ const PaymentsList = ({ filters = [] }: { filters?: PaymentFilter[] }) => {
 
 PaymentsList.defaultProps = {
   filters: [],
+  newPayments: [],
 };
 
 export default PaymentsList;
