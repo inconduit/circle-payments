@@ -61,7 +61,7 @@ const NewPaymentForm = ({
         date: new Date().toISOString(),
         sender: { id: data.sender.value, name: data.sender.label },
         receiver: { id: data.receiver.value, name: data.receiver.label },
-        amount: data.amount,
+        amount: Number(data.amount).toFixed(2),
         currency: data.currency.value,
         memo: data.memo,
       };
