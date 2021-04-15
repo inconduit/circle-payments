@@ -13,6 +13,9 @@ const currencyOptions = currencies.map((currency) => ({
   label: currency,
 }));
 
+const POST_RETRY_LIMIT = 10;
+const POST_RETRY_DELAY = 500;
+
 // TODO ensure unique ID against existing payment ids
 const generateUniqueUserId = () => Math.random().toString(36).substr(2, 9);
 
@@ -24,7 +27,11 @@ const NewPaymentForm = () => {
     formState: { errors },
   } = useForm();
   const [userOptions, setUserOptions] = useState<UserOption[]>([]);
-  const paymentsPost = useFetch("http://localhost:8080/payments");
+  const paymentsPost = useFetch("http://localhost:8080/payments", {
+    retries: POST_RETRY_LIMIT,
+    retryOn: [503],
+    retryDelay: POST_RETRY_DELAY,
+  });
   const userFetch = useFetch(
     "http://localhost:8080/users",
     {
@@ -50,7 +57,7 @@ const NewPaymentForm = () => {
         currency: data.currency.value,
         memo: data.memo,
       };
-      // TODO handle errors and retries on 503
+
       paymentsPost.post(postData);
     },
     [paymentsPost]
