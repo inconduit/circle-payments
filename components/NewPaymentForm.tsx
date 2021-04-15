@@ -7,6 +7,7 @@ import UserData from "../types/UserData";
 import UserOption from "../types/UserOption";
 import { currencies } from "../types/Currency";
 import { customSelectStyles } from "./NewPaymentForm.styled";
+import PaymentData from "../types/PaymentData";
 
 const currencyOptions = currencies.map((currency) => ({
   value: currency,
@@ -19,7 +20,11 @@ const POST_RETRY_DELAY = 500;
 // TODO ensure unique ID against existing payment ids
 const generateUniqueUserId = () => Math.random().toString(36).substr(2, 9);
 
-const NewPaymentForm = () => {
+const NewPaymentForm = ({
+  onAddPayment,
+}: {
+  onAddPayment: (payment: PaymentData) => void;
+}) => {
   const {
     control,
     register,
@@ -58,9 +63,11 @@ const NewPaymentForm = () => {
         memo: data.memo,
       };
 
-      paymentsPost.post(postData);
+      paymentsPost.post(postData).then(() => {
+        onAddPayment(postData);
+      });
     },
-    [paymentsPost]
+    [paymentsPost, onAddPayment]
   );
 
   return (
