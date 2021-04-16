@@ -51,7 +51,7 @@ const PaymentsList = ({
     return allFilteredPayments.length > MAX_PAYMENTS_LIST_LENGTH
       ? allFilteredPayments.slice(0, MAX_PAYMENTS_LIST_LENGTH)
       : allFilteredPayments;
-  }, [filters, mergedAndSortedPayments, payments]);
+  }, [filters, mergedAndSortedPayments]);
 
   useInterval(() => setTickCount(tickCount + 1), 1000);
 
