@@ -11,7 +11,7 @@ import {
 } from "../store/payments/newPaymentsSlice";
 import {
   PageLayout,
-  FiltersContainer,
+  RoundedBorderContainer,
   FiltersRow,
   PaymentsListContainer,
 } from "../layouts/index.styled";
@@ -41,8 +41,12 @@ const IndexPage = () => {
 
   return (
     <PageLayout>
-      <NewPaymentForm onAddPayment={dispatchAddPayment} />
-      <FiltersContainer>
+      <RoundedBorderContainer>
+        <h5>New Payment</h5>
+        <NewPaymentForm onAddPayment={dispatchAddPayment} />
+      </RoundedBorderContainer>
+
+      <RoundedBorderContainer>
         <h5>Filters</h5>
         <FiltersRow>
           <PaymentFilterInput
@@ -60,7 +64,7 @@ const IndexPage = () => {
           <PaymentFilterInput filterKey="memo" onChange={onChangeFilter} />
           <PaymentFilterInput filterKey="date" onChange={onChangeFilter} />
         </FiltersRow>
-      </FiltersContainer>
+      </RoundedBorderContainer>
       <PaymentsListContainer>
         <PaymentsList filters={paymentFilters} newPayments={newPayments} />
       </PaymentsListContainer>

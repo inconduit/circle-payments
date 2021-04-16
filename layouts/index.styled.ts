@@ -4,7 +4,7 @@ export const PageLayout = styled.div`
   padding: 1rem 2rem;
 `;
 
-export const FiltersContainer = styled.div`
+export const RoundedBorderContainer = styled.div`
   border: 1px solid #bbb;
   border-radius: 0.4rem;
   position: relative;

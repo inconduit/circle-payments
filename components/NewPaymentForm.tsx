@@ -4,14 +4,18 @@ import useFetch from "use-http";
 import { useForm, Controller } from "react-hook-form";
 import { useSelector } from "react-redux";
 
-import { create } from "domain";
 import UserData from "../types/UserData";
 import UserOption from "../types/UserOption";
 import PaymentData from "../types/PaymentData";
-import { currencies } from "../types/Currency";
-import { customSelectStyles } from "./NewPaymentForm.styled";
-import { selectNewPaymentIds } from "../store/payments/newPaymentsSlice";
 import generateUniqueId from "../utils/generateUniqueId";
+import {
+  InputRow,
+  customSelectStyles,
+  SubmitButton,
+} from "./NewPaymentForm.styled";
+import { InputContainer, InputLabel } from "./PaymentFilterInput.styled";
+import { currencies } from "../types/Currency";
+import { selectNewPaymentIds } from "../store/payments/newPaymentsSlice";
 
 const currencyOptions = currencies.map((currency) => ({
   value: currency,
@@ -79,58 +83,83 @@ const NewPaymentForm = ({
   );
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          name="sender"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <Select
-              instanceId="selectFromUser"
-              options={userOptions}
-              placeholder="Select Sender"
-              styles={customSelectStyles}
-              {...field}
-            />
-          )}
-        />
-        <Controller
-          name="receiver"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <Select
-              instanceId="selectToUser"
-              options={userOptions}
-              placeholder="Select Recipient"
-              styles={customSelectStyles}
-              {...field}
-            />
-          )}
-        />
-        <input
-          placeholder="Enter amount"
-          {...register("amount", { pattern: /\d+/ })}
-        />
-        <Controller
-          name="currency"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <Select
-              instanceId="selectCurrency"
-              options={currencyOptions}
-              placeholder="Select Currency"
-              styles={customSelectStyles}
-              {...field}
-            />
-          )}
-        />
-        <input placeholder="Enter memo" {...register("memo")} />
-        <input type="submit" />
-      </form>
-    </>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <InputRow>
+        <InputContainer>
+          <InputLabel htmlFor="select-sender">Sender</InputLabel>
+          <Controller
+            name="sender"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Select
+                id="select-sender"
+                instanceId="selectFromUser"
+                options={userOptions}
+                placeholder="Select Sender"
+                styles={customSelectStyles}
+                isSearchable={false}
+                {...field}
+              />
+            )}
+          />
+        </InputContainer>
+        <InputContainer>
+          <InputLabel htmlFor="select-receiver">Receiver</InputLabel>
+          <Controller
+            name="receiver"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Select
+                instanceId="selectToUser"
+                options={userOptions}
+                placeholder="Select Recipient"
+                styles={customSelectStyles}
+                isSearchable={false}
+                {...field}
+              />
+            )}
+          />
+        </InputContainer>
+      </InputRow>
+      <InputRow>
+        <InputContainer>
+          <InputLabel htmlFor="input-amount">Amount</InputLabel>
+          <input
+            id="input-amount"
+            placeholder="Enter amount"
+            {...register("amount", { pattern: /\d+/ })}
+          />
+        </InputContainer>
+        <InputContainer>
+          <InputLabel htmlFor="select-currency">Currency</InputLabel>
+
+          <Controller
+            name="currency"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Select
+                id="select-currency"
+                instanceId="selectCurrency"
+                options={currencyOptions}
+                placeholder="Select Currency"
+                styles={customSelectStyles}
+                isSearchable={false}
+                {...field}
+              />
+            )}
+          />
+        </InputContainer>
+      </InputRow>
+
+      <InputContainer>
+        <InputLabel htmlFor="input-memo">Memo</InputLabel>
+        <input id="input-memo" placeholder="Enter memo" {...register("memo")} />
+      </InputContainer>
+      <SubmitButton type="submit">Send Payment</SubmitButton>
+    </form>
   );
 };
 

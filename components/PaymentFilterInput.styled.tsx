@@ -5,14 +5,19 @@ export const InputContainer = styled.div`
 
   input {
     width: 100%;
-    padding: 0.1rem 0.2rem;
+    padding: 0.3rem 0.4rem;
+    font-size: 0.9rem;
+    height: 1.75rem;
+    border: 1px solid #ccc;
+    border-radius: 3px;
   }
 `;
 
 export const InputLabel = styled.label`
   position: absolute;
+  color: #092d8a;
   font-size: 0.7rem;
-  top: -14px;
+  top: -16px;
   text-transform: capitalize;
 `;
 
