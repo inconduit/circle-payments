@@ -26,6 +26,12 @@ export const SpinnerContainer = styled.div`
   transform: scale(0.5, 0.5);
 `;
 
+export const ErrorMessage = styled.span`
+  color: red;
+  font-size: 0.8rem;
+  margin-left: 2rem;
+`;
+
 export const customSelectStyles: StylesConfig<any, any> = {
   control: (provided) => ({
     ...provided,

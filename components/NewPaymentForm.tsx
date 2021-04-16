@@ -10,6 +10,7 @@ import PaymentData from "../types/PaymentData";
 import RequiredInputLabel from "./RequiredInputLabel";
 import generateUniqueId from "../utils/generateUniqueId";
 import {
+  ErrorMessage,
   InputRow,
   customSelectStyles,
   SubmitButton,
@@ -42,6 +43,7 @@ const NewPaymentForm = ({
     reset,
     formState: { errors },
   } = useForm();
+  const [serverErrorMessage, setServerErrorMessage] = useState(null);
   const [userOptions, setUserOptions] = useState<UserOption[]>([]);
   const newPaymentIds = useSelector(selectNewPaymentIds);
   const paymentsPost = useFetch("http://localhost:8080/payments", {
@@ -74,14 +76,18 @@ const NewPaymentForm = ({
         currency: data.currency.value,
         memo: data.memo,
       };
-
-      paymentsPost.post(postData).then(() => {
-        reset({
-          sender: "",
-          receiver: "",
-          currency: "",
-        });
-        onAddPayment(postData);
+      setServerErrorMessage(null);
+      paymentsPost.post(postData).then((response) => {
+        if (response.error) {
+          setServerErrorMessage(response.error);
+        } else {
+          reset({
+            sender: "",
+            receiver: "",
+            currency: "",
+          });
+          onAddPayment(postData);
+        }
       });
     },
     [paymentsPost, reset, onAddPayment, newPaymentIds]
@@ -168,6 +174,9 @@ const NewPaymentForm = ({
         <SpinnerContainer>
           {paymentsPost.loading && <Spinner />}
         </SpinnerContainer>
+        {serverErrorMessage && (
+          <ErrorMessage>Error: {serverErrorMessage}</ErrorMessage>
+        )}
       </SubmitContainer>
     </form>
   );
