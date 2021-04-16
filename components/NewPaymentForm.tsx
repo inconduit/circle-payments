@@ -140,7 +140,13 @@ const NewPaymentForm = ({
           <input
             id="input-amount"
             placeholder="Enter amount"
-            {...register("amount", { required: true, pattern: /\d+/ })}
+            {...register("amount", {
+              required: true,
+              pattern: {
+                value: /^-?[0-9]\d*\.?\d*$/,
+                message: "Must be a number",
+              },
+            })}
           />
         </InputContainer>
         <InputContainer>

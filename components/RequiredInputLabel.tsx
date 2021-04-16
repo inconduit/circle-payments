@@ -8,11 +8,19 @@ const RequiredInputLabel = ({
   fieldName: string;
   errors: Record<string, any>;
 }) => {
-  const isInvalid = errors?.[fieldName]?.type === "required";
+  const isRequiredInvalid = errors?.[fieldName]?.type === "required";
+  const isPatternInvalid =
+    !isRequiredInvalid && errors?.[fieldName]?.type === "pattern";
+  const patternMessage = isPatternInvalid && errors?.[fieldName]?.message;
 
   return (
-    <InputLabel htmlFor={`input-${fieldName}`} isError={isInvalid} {...props}>
-      {fieldName} {isInvalid && "(required)"}
+    <InputLabel
+      htmlFor={`input-${fieldName}`}
+      isError={isRequiredInvalid || isPatternInvalid}
+      {...props}
+    >
+      {fieldName} {isRequiredInvalid && "(required)"}{" "}
+      {isPatternInvalid && patternMessage}
     </InputLabel>
   );
 };
