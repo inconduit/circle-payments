@@ -16,6 +16,22 @@ export const SubmitButton = styled.button`
   margin: 0.7rem 0;
 `;
 
+export const SubmitContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const SpinnerContainer = styled.div`
+  display: inline-block;
+  transform: scale(0.5, 0.5);
+`;
+
+export const ErrorMessage = styled.span`
+  color: red;
+  font-size: 0.8rem;
+  margin-left: 2rem;
+`;
+
 export const customSelectStyles: StylesConfig<any, any> = {
   control: (provided) => ({
     ...provided,
