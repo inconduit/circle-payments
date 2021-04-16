@@ -51,7 +51,7 @@ const NewPaymentForm = ({
     retryOn: [503],
     retryDelay: POST_RETRY_DELAY,
   });
-  const userFetch = useFetch(
+  useFetch(
     "http://localhost:8080/users",
     {
       onNewData: (_, newData) =>
