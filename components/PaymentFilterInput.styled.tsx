@@ -13,9 +13,9 @@ export const InputContainer = styled.div`
   }
 `;
 
-export const InputLabel = styled.label`
+export const InputLabel = styled.label<{ isError?: boolean }>`
   position: absolute;
-  color: #092d8a;
+  color: ${({ isError }) => (isError ? "#cc0000" : "#092d8a")};
   font-size: 0.7rem;
   top: -16px;
   text-transform: capitalize;

@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import UserData from "../types/UserData";
 import UserOption from "../types/UserOption";
 import PaymentData from "../types/PaymentData";
+import RequiredInputLabel from "./RequiredInputLabel";
 import generateUniqueId from "../utils/generateUniqueId";
 import {
   InputRow,
@@ -35,7 +36,7 @@ const NewPaymentForm = ({
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, touchedFields },
   } = useForm();
   const [userOptions, setUserOptions] = useState<UserOption[]>([]);
   const newPaymentIds = useSelector(selectNewPaymentIds);
@@ -86,7 +87,7 @@ const NewPaymentForm = ({
     <form onSubmit={handleSubmit(onSubmit)}>
       <InputRow>
         <InputContainer>
-          <InputLabel htmlFor="select-sender">Sender</InputLabel>
+          <RequiredInputLabel fieldName="sender" errors={errors} />
           <Controller
             name="sender"
             control={control}
@@ -105,7 +106,7 @@ const NewPaymentForm = ({
           />
         </InputContainer>
         <InputContainer>
-          <InputLabel htmlFor="select-receiver">Receiver</InputLabel>
+          <RequiredInputLabel fieldName="receiver" errors={errors} />
           <Controller
             name="receiver"
             control={control}
@@ -125,16 +126,15 @@ const NewPaymentForm = ({
       </InputRow>
       <InputRow>
         <InputContainer>
-          <InputLabel htmlFor="input-amount">Amount</InputLabel>
+          <RequiredInputLabel fieldName="amount" errors={errors} />
           <input
             id="input-amount"
             placeholder="Enter amount"
-            {...register("amount", { pattern: /\d+/ })}
+            {...register("amount", { required: true, pattern: /\d+/ })}
           />
         </InputContainer>
         <InputContainer>
-          <InputLabel htmlFor="select-currency">Currency</InputLabel>
-
+          <RequiredInputLabel fieldName="currency" errors={errors} />
           <Controller
             name="currency"
             control={control}
