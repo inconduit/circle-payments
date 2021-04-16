@@ -13,18 +13,22 @@ import {
   InputRow,
   customSelectStyles,
   SubmitButton,
+  SpinnerContainer,
+  SubmitContainer,
 } from "./NewPaymentForm.styled";
 import { InputContainer, InputLabel } from "./PaymentFilterInput.styled";
 import { currencies } from "../types/Currency";
 import { selectNewPaymentIds } from "../store/payments/newPaymentsSlice";
+import Spinner from "./Spinner";
 
 const currencyOptions = currencies.map((currency) => ({
   value: currency,
   label: currency,
 }));
 
+// Set the retry delay to 1 second to make the retries visible via the loading spinner
+const POST_RETRY_DELAY = 1000;
 const POST_RETRY_LIMIT = 10;
-const POST_RETRY_DELAY = 500;
 
 const NewPaymentForm = ({
   onAddPayment,
@@ -36,7 +40,7 @@ const NewPaymentForm = ({
     register,
     handleSubmit,
     reset,
-    formState: { errors, touchedFields },
+    formState: { errors },
   } = useForm();
   const [userOptions, setUserOptions] = useState<UserOption[]>([]);
   const newPaymentIds = useSelector(selectNewPaymentIds);
@@ -153,12 +157,18 @@ const NewPaymentForm = ({
           />
         </InputContainer>
       </InputRow>
-
       <InputContainer>
         <InputLabel htmlFor="input-memo">Memo</InputLabel>
         <input id="input-memo" placeholder="Enter memo" {...register("memo")} />
       </InputContainer>
-      <SubmitButton type="submit">Send Payment</SubmitButton>
+      <SubmitContainer>
+        <SubmitButton type="submit" disabled={paymentsPost.loading}>
+          Send Payment
+        </SubmitButton>
+        <SpinnerContainer>
+          {paymentsPost.loading && <Spinner />}
+        </SpinnerContainer>
+      </SubmitContainer>
     </form>
   );
 };
