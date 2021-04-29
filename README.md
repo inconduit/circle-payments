@@ -23,3 +23,6 @@ Commit history can be viewed at [https://github.com/inconduit/circle-payments/co
 - fully validated inline, client side
 - sender / receiver being the same are *not* validated client side intentionally to demonstrate showing server error responses
 - retry happens on failed POST 503 as per spec, a 1000ms delay is set between retries to simulate latency
+
+#### Screenshot:
+![alt text](./screenshot.png)
